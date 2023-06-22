@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Something Productions</title>
+  <style>
+    body {
+      background-color: #f7f7f7;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 36px;
+      margin-top: 100px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    label {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+
+    button[type="submit"],
+    button#googleLogin {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff6f00;
+      color: #fff;
+      font-size: 16px;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover,
+    button#googleLogin:hover {
+      background-color: #ff8f00;
+    }
+
+    p {
+      color: #666;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Login to Something Productions</h1>
+  <form id="loginForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br><br>
+    <button type="submit">Login</button>
+    <br><br>
+    <p>Or login with Google:</p>
+    <button id="googleLogin">Google Login</button>
+  </form>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Perform validation and authentication
+      // Connect to your database and verify credentials
+
+      // Once authenticated, redirect to a new page
+      window.location.href = "dashboard.html";
+    });
+
+    const googleLoginButton = document.getElementById('googleLogin');
+    googleLoginButton.addEventListener('click', () => {
+      // Perform Google login authentication
+      
+      // Once authenticated, redirect to a new page
+      window.location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>

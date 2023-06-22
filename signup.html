@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Something Productions</title>
+  <style>
+    body {
+      background-color: #f7f7f7;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 36px;
+      margin-top: 100px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    label {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+
+    button[type="submit"],
+    button#googleLogin {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff6f00;
+      color: #fff;
+      font-size: 16px;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover,
+    button#googleLogin:hover {
+      background-color: #ff8f00;
+    }
+
+    p {
+      color: #666;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      max-width: 90%;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+    }
+
+    .modal-close {
+      cursor: pointer;
+    }
+
+    .modal-form label {
+      display: block;
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .modal-form input[type="text"],
+    .modal-form input[type="email"],
+    .modal-form input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+
+    .modal-form button[type="submit"] {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff6f00;
+      color: #fff;
+      font-size: 16px;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .modal-form button[type="submit"]:hover {
+      background-color: #ff8f00;
+    }
+  </style>
+</head>
+<body>
+  <h1>Login to Something Productions</h1>
+  <form id="loginForm">
+    <!-- Login form fields -->
+  </form>
+
+  <div id="signUpModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Sign Up</h2>
+        <span class="modal-close">&times;</span>
+      </div>
+      <form id="signUpForm" class="modal-form">
+        <!-- Sign up form fields -->
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <script>
+    // Initialize Firebase with your project's configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID",
+      measurementId: "YOUR_MEASUREMENT_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    var database = firebase.firestore();
+    var auth = firebase.auth();
+
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Authenticate user using Firebase Authentication
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          // Handle login error
+          console.error(error);
+        });
+    });
+
+    const openSignUpModal = document.getElementById('openSignUpModal');
+    const signUpModal = document.getElementById('signUpModal');
+    const signUpForm = document.getElementById('signUpForm');
+    const modalClose = document.getElementsByClassName('modal-close')[0];
+
+    openSignUpModal.addEventListener('click', () => {
+      signUpModal.style.display = 'block';
+    });
+
+    modalClose.addEventListener('click', () => {
+      signUpModal.style.display = 'none';
+    });
+
+    signUpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const dateOfBirth = document.getElementById('date-of-birth').value;
+      const tags = Array.from(document.querySelectorAll('.tag-checkbox:checked'))
+        .map((checkbox) => checkbox.value);
+
+      // Create user with email and password
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          // Save user details to Firestore
+          database.collection('users').doc(user.uid).set({
+            name: name,
+            email: email,
+            dateOfBirth: dateOfBirth,
+            tags: tags
+          })
+            .then(() => {
+              // Redirect to dashboard or show success message
+              window.location.href = "dashboard.html";
+            })
+            .catch((error) => {
+              // Handle Firestore error
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          // Handle sign up error
+          console.error(error);
+        });
+    });
+  </script>
+</body>
+</html>

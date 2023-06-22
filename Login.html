@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something Productions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .social-icons {
+            margin-top: 30px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #666;
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #007bff;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"],
+        button#googleLogin {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff6f00;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover,
+        button#googleLogin:hover {
+            background-color: #ff8f00;
+        }
+
+        p {
+            color: #666;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            max-width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .modal-close {
+            cursor: pointer;
+        }
+
+        .modal-form label {
+            display: block;
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .modal-form input[type="text"],
+        .modal-form input[type="email"],
+        .modal-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .modal-form button[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff6f00;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal-form button[type="submit"]:hover {
+            background-color: #ff8f00;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sign In</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+        <div class="social-icons">
+            <div id="google">
+                <a href="#" class="fa fa-google" onclick="overrideSignIn('google')"> Sign In with Google</a>
+            </div>
+            <p>If you don't have an account</p>
+            <div id="signUp">
+                <a href="signup.html" class="fa fa-envelope" id="signUp" onclick="overrideSignIn('signUp')"> Sign Up
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+
+        // Your Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCoYeze0yQasL8JiOjKGxc4EIXLuzD56WE",
+            authDomain: "some-bc1bb.firebaseapp.com",
+            projectId: "some-bc1bb",
+            storageBucket: "some-bc1bb.appspot.com",
+            messagingSenderId: "748381030307",
+            appId: "1:748381030307:web:fd8c877ce8f9b4600e3c16",
+            measurementId: "G-453EYWFX4Y"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        function checkUserExists(email) {
+            var usersCollection = firebase.firestore().collection("users");
+
+            // Query the "users" collection for the provided email
+            var query = usersCollection.where("email", "==", email);
+
+            // Perform the query
+            return query.get()
+                .then(function (querySnapshot) {
+                    // If any documents match the query, the user exists
+                    if (!querySnapshot.empty) {
+                        return true;
+                    }
+                    // User does not exist
+                    return false;
+                })
+                .catch(function (error) {
+                    console.log("Error checking user existence: ", error);
+                    return false;
+                });
+        }
+
+        // Usage example
+        var userEmail = "user@example.com";
+
+        checkUserExists(userEmail)
+            .then(function (userExists) {
+                if (userExists) {
+                    console.log("User exists in the database");
+                } else {
+                    console.log("User does not exist in the database");
+                }
+            });
+        function overrideSignIn(option) {
+            if (option === "email") {
+                document.getElementById("loginForm").action = "signup.html";
+            } else if (option === "google") {
+
+                function handleGoogleSignIn() {
+                    var provider = new firebase.auth.GoogleAuthProvider();
+
+                    firebase.auth().signInWithPopup(provider)
+                        .then(function (result) {
+                            // Google Sign-In successful, you can access the user's information
+                            var user = result.user;
+                            console.log("Google user:", user);
+                            // Additional actions, such as redirecting or storing user data, can be performed here
+                        })
+                        .catch(function (error) {
+                            // Handle errors that occurred during Google Sign-In
+                            console.log("Google Sign-In error:", error);
+                        });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

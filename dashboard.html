@@ -11,9 +11,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #333;
+      /* background-color: #fff;*/
       padding: 20px;
       color: #fff;
+      border: solid;
+      border-width: 0px 0px 3px 0px;
+      border-color: #000;
     }
 
     .nav-bar h1 {
@@ -28,16 +31,22 @@
 
     .nav-bar li {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 35px;
     }
 
     .nav-bar a {
-      color: #fff;
+      color: #000;
       text-decoration: none;
+      font-family: "jetbrainsmono nerd font";
     }
 
     .nav-bar .icon {
       margin-right: 5px;
+    }
+
+    body {
+        margin: 0px;
+        background-color: #e5e5ff;
     }
 
     .profile-section {
@@ -74,20 +83,28 @@
       margin: 0;
     }
 
+    .profile {
+        margin: 10px;
+    }
+
+    .profile h2 {
+        font-family: "jetbrainsmono nerd font";
+    }
+
     .tag-list {
       margin-top: 20px;
     }
 
     .tag-list button {
-      margin-bottom: 10px;
       padding: 8px 16px;
       background-color: #ff6f00;
       border: none;
-      color: #fff;
+      color: #000;
       font-size: 14px;
       border-radius: 4px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      font-family: inherit;
     }
 
     .tag-list button:hover {
@@ -95,6 +112,7 @@
     }
 
     .icon {
+      font-size: 20px;
       margin-right: 5px;
     }
 
@@ -124,21 +142,19 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="nav-bar">
-      <h1><a href="dashboard.html" class="links"><i>Something Productions</i></a></h1>
-      <ul>
-        <li><a href="about-me.html"><i class="fas fa-info-circle icon"></i>About Us</a></li>
-        <li><a href="upload.html"><i class="fas fa-cloud-upload-alt icon"></i>Write</a></li>
-        <li><a href="internship-form.html"><i class="fas fa-clipboard icon"></i>Submit Internship Form</a></li>
-        <li><a href="profile.html"><i class="fas fa-user icon"></i>Profile</a></li>
-      </ul>
-    </div>
-  </header>
+  <div class="nav-bar">
+    <h1><a href="dashboard.html" class="links">Something Productions</a></h1>
+    <ul class="tag-list">
+      <li><a href="about-me.html"><button><i class="fas fa-info-circle icon"></i>About us</button></a></li>
+      <li><a href="upload.html"><button><i class="fas fa-cloud-upload-alt icon"></i>Write</button></a></li>
+      <li><a href="internship-form.html"><button><i class="fas fa-clipboard icon"></i>Submit Internship Form</button></a></li>
+      <li><a href="profile.html"><button><i class="fas fa-user icon"></i>Profile</button></a></li>
+    </ul>
+  </div>
 
   <main>
-    <section id="profile">
-      <h2>Profile</h2>
+    <section class="profile">
+      <h2>profile</h2>
     </section>
   
   
